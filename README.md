@@ -1,7 +1,9 @@
 # Rogue 3.6 for Linux
 
-Taken 
+Taken [from_bsd_usenix87_rogue3.6.zip](https://britzl.github.io/roguearchive/files/from_bsd_usenix87_rogue3.6.zip)
+from [https://britzl.github.io/roguearchive/](https://britzl.github.io/roguearchive/).
 
+Modified to compile and run in Ubuntu (18.04, should work with others too).
 
 ### Some typical issues
 
