@@ -20,6 +20,7 @@ register struct object *obj;
 register bool drop;
 {
     register char *pb;
+    char* charge_str(struct object*);
 
     switch(obj->o_type)
     {

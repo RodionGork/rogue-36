@@ -176,7 +176,7 @@ quaff()
     status();
     if (p_know[obj->o_which] && p_guess[obj->o_which])
     {
-	cfree(p_guess[obj->o_which]);
+	FREE(p_guess[obj->o_which]);
 	p_guess[obj->o_which] = NULL;
     }
     else if (!p_know[obj->o_which] && askme && p_guess[obj->o_which] == NULL)

@@ -207,7 +207,8 @@ int x;
 	if (op->o_pos.y == y && op->o_pos.x == x)
 		return obj;
     }
-    debug(sprintf(prbuf, "Non-object %d,%d", y, x));
+    sprintf(prbuf, "Non-object %d,%d", y, x);
+    debug(prbuf);
     return NULL;
 }
 

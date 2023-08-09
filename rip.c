@@ -64,7 +64,8 @@ register char monst;
     killer = killname(monst);
     mvaddstr(17, 28-((strlen(killer)+1)/2), killer);
     mvaddstr(16, 33, vowelstr(killer));
-    mvaddstr(18, 28, sprintf(prbuf, "%2d", lt->tm_year));
+    sprintf(prbuf, "%2d", lt->tm_year);
+    mvaddstr(18, 28, prbuf);
     move(LINES-1, 0);
     draw(stdscr);
     score(purse, 0, monst);
@@ -80,6 +81,7 @@ register char monst;
 score(amount, flags, monst)
 char monst;
 {
+    FILE*fdopen(int, char*);
     static struct sc_ent {
 	int sc_score;
 	char sc_name[80];
@@ -100,7 +102,6 @@ char monst;
 	"quit",
 	"A total winner",
     };
-    int	endit();
 
     if (flags != -1)
 	endwin();
@@ -128,7 +129,7 @@ char monst;
     {
 	printf("[Press return to continue]");
 	fflush(stdout);
-	gets(prbuf);
+	fgets(prbuf, sizeof(prbuf), stdin);
     }
     if (wizard)
 	if (strcmp(prbuf, "names") == 0)
@@ -165,7 +166,7 @@ char monst;
     printf("\nTop %d Adventurers:\nRank\tScore\tName\n", NUMTOP);
     for (scp = top_ten; scp < &top_ten[NUMTOP]; scp++) {
 	if (scp->sc_score) {
-	    printf("%d\t%d\t%s: %s on level %d", scp - top_ten + 1,
+	    printf("%ld\t%d\t%s: %s on level %d", scp - top_ten + 1,
 		scp->sc_score, scp->sc_name, reason[scp->sc_flags],
 		scp->sc_level);
 	    if (scp->sc_flags == 0) {
@@ -189,7 +190,7 @@ char monst;
 	    else if (prflags == 2)
 	    {
 		fflush(stdout);
-		gets(prbuf);
+		fgets(prbuf, sizeof(prbuf), stdin);
 		if (prbuf[0] == 'd')
 		{
 		    for (sc2 = scp; sc2 < &top_ten[NUMTOP-1]; sc2++)

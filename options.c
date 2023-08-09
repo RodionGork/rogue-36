@@ -186,7 +186,7 @@ WINDOW *win;
     {
 	if (c == -1)
 	    continue;
-	else if (c == _tty.sg_erase)	/* process erase character */
+	else if (c == 8 || c == 127)	/* process erase character */
 	{
 	    if (sp > buf)
 	    {
@@ -198,7 +198,7 @@ WINDOW *win;
 	    }
 	    continue;
 	}
-	else if (c == _tty.sg_kill)	/* process kill character */
+	else if (c == ESCAPE)	/* process kill character */
 	{
 	    sp = buf;
 	    wmove(win, oy, ox);
@@ -317,7 +317,7 @@ strucpy(s1, s2, len)
 register char *s1, *s2;
 register int len;
 {
-    register char *sp;
+    const char *sp;
 
     while (len--)
     {

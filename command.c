@@ -19,7 +19,6 @@ command()
     register char ch;
     register int ntimes = 1;			/* Number of player moves */
     static char countch, direction, newcount = FALSE;
-    char *unctrl();
 
     if (on(player, ISHASTE)) ntimes++;
     /*
@@ -143,7 +142,7 @@ command()
 			after = FALSE;
 		    else
 			missile(delta.y, delta.x);
-		when 'Q' : after = FALSE; quit();
+		when 'Q' : after = FALSE; quit(0);
 		when 'i' : after = FALSE; inventory(pack, 0);
 		when 'I' : after = FALSE; picky_inven();
 		when 'd' : drop();
@@ -169,8 +168,8 @@ command()
 		    else
 			after = FALSE;
 		when 'v' : msg("Rogue version %s. (mctesq was here)", release);
-		when CTRL(L) : after = FALSE; clearok(curscr,TRUE);draw(curscr);
-		when CTRL(R) : after = FALSE; msg(huh);
+		when CTRL('L') : after = FALSE; clearok(curscr,TRUE);draw(curscr);
+		when CTRL('R') : after = FALSE; msg(huh);
 		when 'S' : 
 		    after = FALSE;
 		    if (save_game())
@@ -182,7 +181,7 @@ command()
 			exit(0);
 		    }
 		when ' ' : ;			/* Rest command */
-		when CTRL(P) :
+		when CTRL('P') :
 		    after = FALSE;
 		    if (wizard)
 		    {
@@ -210,24 +209,24 @@ command()
 		    {
 			when '@' : msg("@ %d,%d", hero.y, hero.x);
 			when 'C' : create_obj();
-			when CTRL(I) : inventory(lvl_obj, 0);
-			when CTRL(W) : whatis();
-			when CTRL(D) : level++; new_level();
-			when CTRL(U) : level--; new_level();
-			when CTRL(F) : show_win(stdscr, "--More (level map)--");
-			when CTRL(X) : show_win(mw, "--More (monsters)--");
-			when CTRL(T) : teleport();
-			when CTRL(E) : msg("food left: %d", food_left);
-			when CTRL(A) : msg("%d things in your pack", inpack);
-			when CTRL(C) : add_pass();
-			when CTRL(N) :
+			when CTRL('I') : inventory(lvl_obj, 0);
+			when CTRL('W') : whatis();
+			when CTRL('D') : level++; new_level();
+			when CTRL('U') : level--; new_level();
+			when CTRL('F') : show_win(stdscr, "--More (level map)--");
+			when CTRL('X') : show_win(mw, "--More (monsters)--");
+			when CTRL('T') : teleport();
+			when CTRL('E') : msg("food left: %d", food_left);
+			when CTRL('A') : msg("%d things in your pack", inpack);
+			when CTRL('C') : add_pass();
+			when CTRL('N') :
 			{
 			    register struct linked_list *item;
 
 			    if ((item = get_item("charge", STICK)) != NULL)
 				((struct object *) ldata(item))->o_charges = 10000;
 			}
-			when CTRL(H) :
+			when CTRL('H') :
 			{
 			    register int i;
 			    register struct linked_list *item;
@@ -307,7 +306,7 @@ command()
  *	Have player make certain, then exit.
  */
 
-quit()
+void quit(int x)
 {
     /*
      * Reset the signal in case we got here via an interrupt
@@ -564,8 +563,6 @@ shell()
     }
     else
     {
-	int endit();
-
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	while (wait(&ret_status) != pid)
@@ -591,7 +588,6 @@ call()
     register struct linked_list *item;
     register char **guess, *elsewise;
     register bool *know;
-    char *malloc();
 
     item = get_item("call", CALLABLE);
     /*
@@ -641,7 +637,7 @@ call()
     else
 	msg("What do you want to call it? ");
     if (guess[obj->o_which] != NULL)
-	cfree(guess[obj->o_which]);
+        FREE(guess[obj->o_which]);
     strcpy(prbuf, elsewise);
     if (get_str(prbuf, cw) == NORM)
     {

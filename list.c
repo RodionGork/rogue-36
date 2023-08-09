@@ -101,9 +101,12 @@ new(size)
 int size;
 {
     register char *space = ALLOC(size);
+    void *sbrk(intptr_t increment);
 
-    if (space == NULL)
-	fatal(sprintf(prbuf, "Rogue ran out of memory (%d).  Fatal error!", sbrk(0)));
+    if (space == NULL) {
+	sprintf(prbuf, "Rogue ran out of memory (%p).  Fatal error!", sbrk(0));
+	fatal(prbuf);
+    }
     total++;
     return space;
 }

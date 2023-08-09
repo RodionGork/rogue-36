@@ -332,15 +332,20 @@ init_things()
 
 init_colors()
 {
-    register int i;
+    register int i, c;
     register char *str;
+    bool used[NCOLORS];
+
+    for (i = 0; i < NCOLORS; i++)
+	used[i] = FALSE;
 
     for (i = 0; i < MAXPOTIONS; i++)
     {
-	do
-	    str = rainbow[rnd(NCOLORS)];
-	until (isupper(*str));
-	*str = tolower(*str);
+	do {
+	    c = rnd(NCOLORS);
+	    str = rainbow[c];
+	} until (!used[c]);
+	used[c] = TRUE;
 	p_colors[i] = str;
 	p_know[i] = FALSE;
 	p_guess[i] = NULL;
@@ -394,15 +399,20 @@ init_names()
 
 init_stones()
 {
-    register int i;
+    register int i, c;
     register char *str;
+    bool used[NSTONES];
+
+    for (i = 0; i < NSTONES; i++)
+        used[i] = FALSE;
 
     for (i = 0; i < MAXRINGS; i++)
     {
-	do
-	    str = stones[rnd(NSTONES)];
-	until (isupper(*str));
-	*str = tolower(*str);
+	do {
+	    c = rnd(NSTONES);
+	    str = stones[c];
+	} until (!used[c]);
+	used[c] = TRUE;
 	r_stones[i] = str;
 	r_know[i] = FALSE;
 	r_guess[i] = NULL;
@@ -419,29 +429,34 @@ init_stones()
 
 init_materials()
 {
-    register int i;
+    register int i, c;
     register char *str;
+    bool wand, used[NMETAL+NWOOD];
+
+    for (i = 0; i < NMETAL+NWOOD; i++)
+        used[i] = FALSE;
 
     for (i = 0; i < MAXSTICKS; i++)
     {
-	do
+	do {
 	    if (rnd(100) > 50)
 	    {
-		str = metal[rnd(NMETAL)];
-		if (isupper(*str))
-			ws_type[i] = "wand";
+		c = rnd(NMETAL);
+		str = metal[c];
+		wand = TRUE;
 	    }
 	    else
 	    {
-		str = wood[rnd(NWOOD)];
-		if (isupper(*str))
-			ws_type[i] = "staff";
+		c = rnd(NWOOD);
+		str = wood[c];
+		wand = FALSE;
 	    }
-	until (isupper(*str));
-	*str = tolower(*str);
+	} until (!used[c + (wand ? 0 : NMETAL)]);
+	used[c + (wand ? 0 : NMETAL)] = TRUE;
 	ws_made[i] = str;
 	ws_know[i] = FALSE;
 	ws_guess[i] = NULL;
+	ws_type[i] = wand ? "wand" : "staff";
 	if (i > 0)
 		ws_magic[i].mi_prob += ws_magic[i-1].mi_prob;
     }
@@ -505,8 +520,8 @@ struct h_list helpstr[] = {
     'd',	"	drop object",
     'c',	"	call object",
     'o',	"	examine/set options",
-    CTRL(L),	"	redraw screen",
-    CTRL(R),	"	repeat last message",
+    CTRL('L'),	"	redraw screen",
+    CTRL('R'),	"	repeat last message",
     ESCAPE,	"	cancel command",
     'v',	"	print program version number",
     '!',	"	shell escape",

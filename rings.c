@@ -7,8 +7,6 @@
  * @(#)rings.c	3.17 (Berkeley) 6/15/81
  */
 
-char *malloc();
-
 ring_on()
 {
     register struct object *obj;
@@ -80,7 +78,7 @@ ring_on()
     status();
     if (r_know[obj->o_which] && r_guess[obj->o_which])
     {
-	cfree(r_guess[obj->o_which]);
+	FREE(r_guess[obj->o_which]);
 	r_guess[obj->o_which] = NULL;
     }
     else if (!r_know[obj->o_which] && askme && r_guess[obj->o_which] == NULL)

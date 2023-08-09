@@ -6,6 +6,7 @@
 
 #include <curses.h>
 #include <ctype.h>
+#include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <signal.h>
@@ -13,9 +14,8 @@
 
 typedef struct stat STAT;
 
-extern char *sys_errlist[], version[], encstr[];
-extern bool _endwin;
-extern int errno;
+extern const char* const sys_errlist[];
+extern char version[], encstr[];
 
 char *sbrk();
 
@@ -59,7 +59,7 @@ save_game()
 	strcpy(file_name, buf);
 gotfile:
 	if ((savef = fopen(file_name, "w")) == NULL)
-	    msg(sys_errlist[errno]);	/* fake perror() */
+	    msg(strerror(errno));	/* fake perror() */
     } while (savef == NULL);
 
     /*
@@ -74,12 +74,12 @@ gotfile:
  * automatically save a file.  This is used if a HUP signal is
  * recieved
  */
-auto_save()
+void auto_save(int x)
 {
     register FILE *savef;
     register int i;
 
-    for (i = 0; i < NSIG; i++)
+    for (i = 0; i < _NSIG; i++)
 	signal(i, SIG_IGN);
     if (file_name[0] != '\0' && (savef = fopen(file_name, "w")) != NULL)
 	save_file(savef);
@@ -97,7 +97,7 @@ register FILE *savef;
     fstat(fileno(savef), &sbuf);
     fwrite("junk", 1, 5, savef);
     fseek(savef, 0L, 0);
-    _endwin = TRUE;
+    endwin();
     encwrite(version, sbrk(0) - version, savef);
     fclose(savef);
 }
@@ -167,18 +167,6 @@ char **envp;
 	}
 
     environ = envp;
-    if (!My_term && isatty(2))
-    {
-	register char	*sp;
-
-	_tty_ch = 2;
-	gettmode();
-	if ((sp = getenv("TERM")) == NULL)
-	    sp = Def_term;
-	setterm(sp);
-    }
-    else
-	setterm(Def_term);
     strcpy(file_name, file);
     setup();
     clearok(curscr, TRUE);

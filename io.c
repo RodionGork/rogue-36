@@ -17,10 +17,11 @@ static char msgbuf[BUFSIZ];
 static int newpos = 0;
 
 /*VARARGS1*/
-msg(fmt, args)
-char *fmt;
-int args;
+int msg(char* fmt, ...)
 {
+    va_list args;
+    va_start(args, fmt);
+
     /*
      * if the string is "", just clear the line
      */
@@ -34,18 +35,18 @@ int args;
     /*
      * otherwise add to the message and flush it out
      */
-    doadd(fmt, &args);
+    doadd(fmt, args);
     endmsg();
 }
 
 /*
  * add things to the current message
  */
-addmsg(fmt, args)
-char *fmt;
-int args;
+int addmsg(char* fmt, ...)
 {
-    doadd(fmt, &args);
+    va_list args;
+    va_start(args, fmt);
+    doadd(fmt, args);
 }
 
 /*
@@ -69,20 +70,9 @@ endmsg()
     draw(cw);
 }
 
-doadd(fmt, args)
-char *fmt;
-int **args;
+doadd(char* fmt, va_list args)
 {
-    static FILE junk;
-
-    /*
-     * Do the printf into buf
-     */
-    junk._flag = _IOWRT + _IOSTRG;
-    junk._ptr = &msgbuf[newpos];
-    junk._cnt = 32767;
-    _doprnt(fmt, args, &junk);
-    putc('\0', &junk);
+    vsprintf(msgbuf+newpos, fmt, args);
     newpos = strlen(msgbuf);
 }
 
@@ -121,6 +111,7 @@ readchar()
     return c;
 }
 
+#ifdef UNCTRL_CUSTOM
 /*
  * unctrl:
  *	Print a readable version of a certain character
@@ -134,6 +125,7 @@ char ch;
 
     return _unctrl[ch&0177];
 }
+#endif
 
 /*
  * status:
