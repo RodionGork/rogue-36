@@ -1,7 +1,7 @@
 /*
  * Various input/output functions
  *
- * @(#)io.c	3.10 (Berkeley) 6/15/81
+ * @(#)io.c        3.10 (Berkeley) 6/15/81
  */
 
 #include <curses.h>
@@ -10,7 +10,7 @@
 
 /*
  * msg:
- *	Display a message at the top of the screen.
+ *        Display a message at the top of the screen.
  */
 
 static char msgbuf[BUFSIZ];
@@ -27,10 +27,10 @@ int msg(char* fmt, ...)
      */
     if (*fmt == '\0')
     {
-	wmove(cw, 0, 0);
-	wclrtoeol(cw);
-	mpos = 0;
-	return;
+        wmove(cw, 0, 0);
+        wclrtoeol(cw);
+        mpos = 0;
+        return;
     }
     /*
      * otherwise add to the message and flush it out
@@ -58,10 +58,10 @@ endmsg()
     strcpy(huh, msgbuf);
     if (mpos)
     {
-	wmove(cw, 0, mpos);
-	waddstr(cw, "--More--");
-	draw(cw);
-	wait_for(' ');
+        wmove(cw, 0, mpos);
+        waddstr(cw, "--More--");
+        draw(cw);
+        wait_for(' ');
     }
     mvwaddstr(cw, 0, 0, msgbuf);
     wclrtoeol(cw);
@@ -78,27 +78,27 @@ doadd(char* fmt, va_list args)
 
 /*
  * step_ok:
- *	returns true if it is ok to step on ch
+ *        returns true if it is ok to step on ch
  */
 
 step_ok(ch)
 {
     switch (ch)
     {
-	case ' ':
-	case '|':
-	case '-':
-	case SECRETDOOR:
-	    return FALSE;
-	default:
-	    return (!isalpha(ch));
+        case ' ':
+        case '|':
+        case '-':
+        case SECRETDOOR:
+            return FALSE;
+        default:
+            return (!isalpha(ch));
     }
 }
 
 /*
  * readchar:
- *	flushes stdout so that screen is up to date and then returns
- *	getchar.
+ *        flushes stdout so that screen is up to date and then returns
+ *        getchar.
  */
 
 readchar()
@@ -107,21 +107,21 @@ readchar()
 
     fflush(stdout);
     while (read(0, &c, 1) < 0)
-	continue;
+        continue;
     return c;
 }
 
 #ifdef UNCTRL_CUSTOM
 /*
  * unctrl:
- *	Print a readable version of a certain character
+ *        Print a readable version of a certain character
  */
 
 char *
 unctrl(ch)
 char ch;
 {
-    extern char *_unctrl[];		/* Defined in curses library */
+    extern char *_unctrl[];                /* Defined in curses library */
 
     return _unctrl[ch&0177];
 }
@@ -129,7 +129,7 @@ char ch;
 
 /*
  * status:
- *	Display the important stats line.  Keep the cursor where it was.
+ *        Display the important stats line.  Keep the cursor where it was.
  */
 
 status()
@@ -146,30 +146,30 @@ status()
      * bother.
      */
     if (s_hp == pstats.s_hpt && s_exp == pstats.s_exp && s_pur == purse
-	&& s_ac == (cur_armor != NULL ? cur_armor->o_ac : pstats.s_arm)
-	&& s_str == pstats.s_str.st_str && s_add == pstats.s_str.st_add
-	&& s_lvl == level && s_hungry == hungry_state)
-	    return;
-	
+        && s_ac == (cur_armor != NULL ? cur_armor->o_ac : pstats.s_arm)
+        && s_str == pstats.s_str.st_str && s_add == pstats.s_str.st_add
+        && s_lvl == level && s_hungry == hungry_state)
+            return;
+        
     getyx(cw, oy, ox);
     if (s_hp != max_hp)
     {
-	temp = s_hp = max_hp;
-	for (hpwidth = 0; temp; hpwidth++)
-	    temp /= 10;
+        temp = s_hp = max_hp;
+        for (hpwidth = 0; temp; hpwidth++)
+            temp /= 10;
     }
     sprintf(buf, "Level: %d  Gold: %-5d  Hp: %*d(%*d)  Str: %-2d",
-	level, purse, hpwidth, pstats.s_hpt, hpwidth, max_hp,
-	pstats.s_str.st_str);
+        level, purse, hpwidth, pstats.s_hpt, hpwidth, max_hp,
+        pstats.s_str.st_str);
     if (pstats.s_str.st_add != 0)
     {
-	pb = &buf[strlen(buf)];
-	sprintf(pb, "/%d", pstats.s_str.st_add);
+        pb = &buf[strlen(buf)];
+        sprintf(pb, "/%d", pstats.s_str.st_add);
     }
     pb = &buf[strlen(buf)];
     sprintf(pb, "  Ac: %-2d  Exp: %d/%ld",
-	cur_armor != NULL ? cur_armor->o_ac : pstats.s_arm, pstats.s_lvl,
-	pstats.s_exp);
+        cur_armor != NULL ? cur_armor->o_ac : pstats.s_arm, pstats.s_lvl,
+        pstats.s_exp);
     /*
      * Save old status
      */
@@ -183,13 +183,13 @@ status()
     mvwaddstr(cw, LINES - 1, 0, buf);
     switch (hungry_state)
     {
-	when 0: ;
-	when 1:
-	    waddstr(cw, "  Hungry");
-	when 2:
-	    waddstr(cw, "  Weak");
-	when 3:
-	    waddstr(cw, "  Fainting");
+        when 0: ;
+        when 1:
+            waddstr(cw, "  Hungry");
+        when 2:
+            waddstr(cw, "  Weak");
+        when 3:
+            waddstr(cw, "  Fainting");
     }
     wclrtoeol(cw);
     s_hungry = hungry_state;
@@ -198,7 +198,7 @@ status()
 
 /*
  * wait_for
- *	Sit around until the guy types the right key
+ *        Sit around until the guy types the right key
  */
 
 wait_for(ch)
@@ -208,15 +208,15 @@ register char ch;
 
     if (ch == '\n')
         while ((c = readchar()) != '\n' && c != '\r')
-	    continue;
+            continue;
     else
         while (readchar() != ch)
-	    continue;
+            continue;
 }
 
 /*
  * show_win:
- *	function used to display a window and wait before returning
+ *        function used to display a window and wait before returning
  */
 
 show_win(scr, message)

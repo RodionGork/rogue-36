@@ -2,11 +2,11 @@
  * File for the fun ends
  * Death or a total win
  *
- * @(#)rip.c	3.13 (Berkeley) 6/16/81
+ * @(#)rip.c        3.13 (Berkeley) 6/16/81
  *
  * CHANGE!  Mike Hibler @ New Mexico Tech
- *	Added constant NUMTOP which is the number of top scores to keep.
- *	NUMTOP is defined in mach_dep.h.
+ *        Added constant NUMTOP which is the number of top scores to keep.
+ *        NUMTOP is defined in mach_dep.h.
  */
 
 #include <curses.h>
@@ -35,11 +35,11 @@ static char *rip[] = {
     0
 };
 
-char	*killname();
+char        *killname();
 
 /*
  * death:
- *	Do something really fun when he dies
+ *        Do something really fun when he dies
  */
 
 death(monst)
@@ -56,7 +56,7 @@ register char monst;
     clear();
     move(8, 0);
     while (*dp)
-	printw("%s\n", *dp++);
+        printw("%s\n", *dp++);
     mvaddstr(14, 28-((strlen(whoami)+1)/2), whoami);
     purse -= purse/10;
     sprintf(buf, "%d Au", purse);
@@ -83,12 +83,12 @@ char monst;
 {
     FILE*fdopen(int, char*);
     static struct sc_ent {
-	int sc_score;
-	char sc_name[80];
-	int sc_flags;
-	int sc_level;
-	int sc_uid;
-	char sc_monster;
+        int sc_score;
+        char sc_name[80];
+        int sc_flags;
+        int sc_level;
+        int sc_uid;
+        char sc_monster;
     } top_ten[NUMTOP];
     register struct sc_ent *scp;
     register int i;
@@ -98,115 +98,115 @@ char monst;
     register int prflags = 0;
     register int fd;
     static char *reason[] = {
-	"killed",
-	"quit",
-	"A total winner",
+        "killed",
+        "quit",
+        "A total winner",
     };
 
     if (flags != -1)
-	endwin();
+        endwin();
     /*
      * Open file and read list
      */
 
     if ((fd = open(SCOREFILE, 2)) < 0)
-	return;
+        return;
     outf = fdopen(fd, "w");
 
     for (scp = top_ten; scp < &top_ten[NUMTOP]; scp++)
     {
-	scp->sc_score = 0;
-	for (i = 0; i < 80; i++)
-	    scp->sc_name[i] = rnd(255);
-	scp->sc_flags = RN;
-	scp->sc_level = RN;
-	scp->sc_monster = RN;
-	scp->sc_uid = RN;
+        scp->sc_score = 0;
+        for (i = 0; i < 80; i++)
+            scp->sc_name[i] = rnd(255);
+        scp->sc_flags = RN;
+        scp->sc_level = RN;
+        scp->sc_monster = RN;
+        scp->sc_uid = RN;
     }
 
     signal(SIGINT, SIG_DFL);
     if (flags != -1)
     {
-	printf("[Press return to continue]");
-	fflush(stdout);
-	fgets(prbuf, sizeof(prbuf), stdin);
+        printf("[Press return to continue]");
+        fflush(stdout);
+        fgets(prbuf, sizeof(prbuf), stdin);
     }
     if (wizard)
-	if (strcmp(prbuf, "names") == 0)
-	    prflags = 1;
-	else if (strcmp(prbuf, "edit") == 0)
-	    prflags = 2;
+        if (strcmp(prbuf, "names") == 0)
+            prflags = 1;
+        else if (strcmp(prbuf, "edit") == 0)
+            prflags = 2;
     encread((char *) top_ten, sizeof top_ten, fd);
     /*
      * Insert her in list if need be
      */
     if (!waswizard)
     {
-	for (scp = top_ten; scp < &top_ten[NUMTOP]; scp++)
-	    if (amount > scp->sc_score)
-		break;
-	if (scp < &top_ten[NUMTOP])
-	{
-	    for (sc2 = &top_ten[NUMTOP-1]; sc2 > scp; sc2--)
-		*sc2 = *(sc2-1);
-	    scp->sc_score = amount;
-	    strcpy(scp->sc_name, whoami);
-	    scp->sc_flags = flags;
-	    if (flags == 2)
-		scp->sc_level = max_level;
-	    else
-		scp->sc_level = level;
-	    scp->sc_monster = monst;
-	    scp->sc_uid = getuid();
-	}
+        for (scp = top_ten; scp < &top_ten[NUMTOP]; scp++)
+            if (amount > scp->sc_score)
+                break;
+        if (scp < &top_ten[NUMTOP])
+        {
+            for (sc2 = &top_ten[NUMTOP-1]; sc2 > scp; sc2--)
+                *sc2 = *(sc2-1);
+            scp->sc_score = amount;
+            strcpy(scp->sc_name, whoami);
+            scp->sc_flags = flags;
+            if (flags == 2)
+                scp->sc_level = max_level;
+            else
+                scp->sc_level = level;
+            scp->sc_monster = monst;
+            scp->sc_uid = getuid();
+        }
     }
     /*
      * Print the list
      */
     printf("\nTop %d Adventurers:\nRank\tScore\tName\n", NUMTOP);
     for (scp = top_ten; scp < &top_ten[NUMTOP]; scp++) {
-	if (scp->sc_score) {
-	    printf("%ld\t%d\t%s: %s on level %d", scp - top_ten + 1,
-		scp->sc_score, scp->sc_name, reason[scp->sc_flags],
-		scp->sc_level);
-	    if (scp->sc_flags == 0) {
-		printf(" by a");
-		killer = killname(scp->sc_monster);
-		if (*killer == 'a' || *killer == 'e' || *killer == 'i' ||
-		    *killer == 'o' || *killer == 'u')
-			putchar('n');
-		printf(" %s", killer);
-	    }
-	    if (prflags == 1)
-	    {
-		struct passwd *pp, *getpwuid();
+        if (scp->sc_score) {
+            printf("%ld\t%d\t%s: %s on level %d", scp - top_ten + 1,
+                scp->sc_score, scp->sc_name, reason[scp->sc_flags],
+                scp->sc_level);
+            if (scp->sc_flags == 0) {
+                printf(" by a");
+                killer = killname(scp->sc_monster);
+                if (*killer == 'a' || *killer == 'e' || *killer == 'i' ||
+                    *killer == 'o' || *killer == 'u')
+                        putchar('n');
+                printf(" %s", killer);
+            }
+            if (prflags == 1)
+            {
+                struct passwd *pp, *getpwuid();
 
-		if ((pp = getpwuid(scp->sc_uid)) == NULL)
-		    printf(" (%d)", scp->sc_uid);
-		else
-		    printf(" (%s)", pp->pw_name);
-		putchar('\n');
-	    }
-	    else if (prflags == 2)
-	    {
-		fflush(stdout);
-		fgets(prbuf, sizeof(prbuf), stdin);
-		if (prbuf[0] == 'd')
-		{
-		    for (sc2 = scp; sc2 < &top_ten[NUMTOP-1]; sc2++)
-			*sc2 = *(sc2 + 1);
-		    top_ten[NUMTOP-1].sc_score = 0;
-		    for (i = 0; i < 80; i++)
-			top_ten[NUMTOP-1].sc_name[i] = rnd(255);
-		    top_ten[NUMTOP-1].sc_flags = RN;
-		    top_ten[NUMTOP-1].sc_level = RN;
-		    top_ten[NUMTOP-1].sc_monster = RN;
-		    scp--;
-		}
-	    }
-	    else
-		printf(".\n");
-	}
+                if ((pp = getpwuid(scp->sc_uid)) == NULL)
+                    printf(" (%d)", scp->sc_uid);
+                else
+                    printf(" (%s)", pp->pw_name);
+                putchar('\n');
+            }
+            else if (prflags == 2)
+            {
+                fflush(stdout);
+                fgets(prbuf, sizeof(prbuf), stdin);
+                if (prbuf[0] == 'd')
+                {
+                    for (sc2 = scp; sc2 < &top_ten[NUMTOP-1]; sc2++)
+                        *sc2 = *(sc2 + 1);
+                    top_ten[NUMTOP-1].sc_score = 0;
+                    for (i = 0; i < 80; i++)
+                        top_ten[NUMTOP-1].sc_name[i] = rnd(255);
+                    top_ten[NUMTOP-1].sc_flags = RN;
+                    top_ten[NUMTOP-1].sc_level = RN;
+                    top_ten[NUMTOP-1].sc_monster = RN;
+                    scp--;
+                }
+            }
+            else
+                printf(".\n");
+        }
     }
     fseek(outf, 0L, 0);
     /*
@@ -248,74 +248,74 @@ total_winner()
     oldpurse = purse;
     for (c = 'a', item = pack; item != NULL; c++, item = next(item))
     {
-	obj = (struct object *) ldata(item);
-	switch (obj->o_type)
-	{
-	    when FOOD:
-		worth = 2 * obj->o_count;
-	    when WEAPON:
-		switch (obj->o_which)
-		{
-		    when MACE: worth = 8;
-		    when SWORD: worth = 15;
-		    when BOW: worth = 75;
-		    when ARROW: worth = 1;
-		    when DAGGER: worth = 2;
-		    when ROCK: worth = 1;
-		    when TWOSWORD: worth = 30;
-		    when SLING: worth = 1;
-		    when DART: worth = 1;
-		    when CROSSBOW: worth = 15;
-		    when BOLT: worth = 1;
-		    when SPEAR: worth = 2;
-		    otherwise: worth = 0;
-		}
-		worth *= (1 + (10 * obj->o_hplus + 10 * obj->o_dplus));
-		worth *= obj->o_count;
-		obj->o_flags |= ISKNOW;
-	    when ARMOR:
-		switch (obj->o_which)
-		{
-		    when LEATHER: worth = 5;
-		    when RING_MAIL: worth = 30;
-		    when STUDDED_LEATHER: worth = 15;
-		    when SCALE_MAIL: worth = 3;
-		    when CHAIN_MAIL: worth = 75;
-		    when SPLINT_MAIL: worth = 80;
-		    when BANDED_MAIL: worth = 90;
-		    when PLATE_MAIL: worth = 400;
-		    otherwise: worth = 0;
-		}
-		worth *= (1 + (10 * (a_class[obj->o_which] - obj->o_ac)));
-		obj->o_flags |= ISKNOW;
-	    when SCROLL:
-		s_know[obj->o_which] = TRUE;
-		worth = s_magic[obj->o_which].mi_worth;
-		worth *= obj->o_count;
-	    when POTION:
-		p_know[obj->o_which] = TRUE;
-		worth = p_magic[obj->o_which].mi_worth;
-		worth *= obj->o_count;
-	    when RING:
-		obj->o_flags |= ISKNOW;
-		r_know[obj->o_which] = TRUE;
-		worth = r_magic[obj->o_which].mi_worth;
-		if (obj->o_which == R_ADDSTR || obj->o_which == R_ADDDAM ||
-		    obj->o_which == R_PROTECT || obj->o_which == R_ADDHIT)
-			if (obj->o_ac > 0)
-			    worth += obj->o_ac * 20;
-			else
-			    worth = 50;
-	    when STICK:
-		obj->o_flags |= ISKNOW;
-		ws_know[obj->o_which] = TRUE;
-		worth = ws_magic[obj->o_which].mi_worth;
-		worth += 20 * obj->o_charges;
-	    when AMULET:
-		worth = 1000;
-	}
-	mvprintw(c - 'a' + 1, 0, "%c) %5d  %s", c, worth, inv_name(obj, FALSE));
-	purse += worth;
+        obj = (struct object *) ldata(item);
+        switch (obj->o_type)
+        {
+            when FOOD:
+                worth = 2 * obj->o_count;
+            when WEAPON:
+                switch (obj->o_which)
+                {
+                    when MACE: worth = 8;
+                    when SWORD: worth = 15;
+                    when BOW: worth = 75;
+                    when ARROW: worth = 1;
+                    when DAGGER: worth = 2;
+                    when ROCK: worth = 1;
+                    when TWOSWORD: worth = 30;
+                    when SLING: worth = 1;
+                    when DART: worth = 1;
+                    when CROSSBOW: worth = 15;
+                    when BOLT: worth = 1;
+                    when SPEAR: worth = 2;
+                    otherwise: worth = 0;
+                }
+                worth *= (1 + (10 * obj->o_hplus + 10 * obj->o_dplus));
+                worth *= obj->o_count;
+                obj->o_flags |= ISKNOW;
+            when ARMOR:
+                switch (obj->o_which)
+                {
+                    when LEATHER: worth = 5;
+                    when RING_MAIL: worth = 30;
+                    when STUDDED_LEATHER: worth = 15;
+                    when SCALE_MAIL: worth = 3;
+                    when CHAIN_MAIL: worth = 75;
+                    when SPLINT_MAIL: worth = 80;
+                    when BANDED_MAIL: worth = 90;
+                    when PLATE_MAIL: worth = 400;
+                    otherwise: worth = 0;
+                }
+                worth *= (1 + (10 * (a_class[obj->o_which] - obj->o_ac)));
+                obj->o_flags |= ISKNOW;
+            when SCROLL:
+                s_know[obj->o_which] = TRUE;
+                worth = s_magic[obj->o_which].mi_worth;
+                worth *= obj->o_count;
+            when POTION:
+                p_know[obj->o_which] = TRUE;
+                worth = p_magic[obj->o_which].mi_worth;
+                worth *= obj->o_count;
+            when RING:
+                obj->o_flags |= ISKNOW;
+                r_know[obj->o_which] = TRUE;
+                worth = r_magic[obj->o_which].mi_worth;
+                if (obj->o_which == R_ADDSTR || obj->o_which == R_ADDDAM ||
+                    obj->o_which == R_PROTECT || obj->o_which == R_ADDHIT)
+                        if (obj->o_ac > 0)
+                            worth += obj->o_ac * 20;
+                        else
+                            worth = 50;
+            when STICK:
+                obj->o_flags |= ISKNOW;
+                ws_know[obj->o_which] = TRUE;
+                worth = ws_magic[obj->o_which].mi_worth;
+                worth += 20 * obj->o_charges;
+            when AMULET:
+                worth = 1000;
+        }
+        mvprintw(c - 'a' + 1, 0, "%c) %5d  %s", c, worth, inv_name(obj, FALSE));
+        purse += worth;
     }
     mvprintw(c - 'a' + 1, 0,"   %5d  Gold Peices          ", oldpurse);
     refresh();
@@ -328,15 +328,15 @@ killname(monst)
 register char monst;
 {
     if (isupper(monst))
-	return monsters[monst-'A'].m_name;
+        return monsters[monst-'A'].m_name;
     else
-	switch (monst)
-	{
-	    case 'a':
-		return "arrow";
-	    case 'd':
-		return "dart";
-	    case 'b':
-		return "bolt";
-	}
+        switch (monst)
+        {
+            case 'a':
+                return "arrow";
+            case 'd':
+                return "dart";
+            case 'b':
+                return "bolt";
+        }
 }

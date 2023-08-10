@@ -3,9 +3,9 @@
 
 /*
  * new_level:
- *	Dig and draw a new level
+ *        Dig and draw a new level
  *
- * @(#)new_level.c	3.7 (Berkeley) 6/2/81
+ * @(#)new_level.c        3.7 (Berkeley) 6/2/81
  */
 
 new_level()
@@ -15,7 +15,7 @@ new_level()
     coord stairs;
 
     if (level > max_level)
-	max_level = level;
+        max_level = level;
     wclear(cw);
     wclear(mw);
     clear();
@@ -24,16 +24,16 @@ new_level()
      * Free up the monsters on the last level
      */
     free_list(mlist);
-    do_rooms();				/* Draw rooms */
-    do_passages();			/* Draw passages */
+    do_rooms();                                /* Draw rooms */
+    do_passages();                        /* Draw passages */
     no_food++;
-    put_things();			/* Place objects (if any) */
+    put_things();                        /* Place objects (if any) */
     /*
      * Place the staircase down.
      */
     do {
         rm = rnd_room();
-	rnd_pos(&rooms[rm], &stairs);
+        rnd_pos(&rooms[rm], &stairs);
     } until (winat(stairs.y, stairs.x) == FLOOR);
     addch(STAIRS);
     /*
@@ -41,36 +41,36 @@ new_level()
      */
     if (rnd(10) < level)
     {
-	ntraps = rnd(level/4)+1;
-	if (ntraps > MAXTRAPS)
-	    ntraps = MAXTRAPS;
-	i = ntraps;
-	while (i--)
-	{
-	    do
-	    {
-		rm = rnd_room();
-		rnd_pos(&rooms[rm], &stairs);
-	    } until (winat(stairs.y, stairs.x) == FLOOR);
-	    switch(rnd(6))
-	    {
-		when 0: ch = TRAPDOOR;
-		when 1: ch = BEARTRAP;
-		when 2: ch = SLEEPTRAP;
-		when 3: ch = ARROWTRAP;
-		when 4: ch = TELTRAP;
-		when 5: ch = DARTTRAP;
-	    }
-	    addch(TRAP);
-	    traps[i].tr_type = ch;
-	    traps[i].tr_flags = 0;
-	    traps[i].tr_pos = stairs;
-	}
+        ntraps = rnd(level/4)+1;
+        if (ntraps > MAXTRAPS)
+            ntraps = MAXTRAPS;
+        i = ntraps;
+        while (i--)
+        {
+            do
+            {
+                rm = rnd_room();
+                rnd_pos(&rooms[rm], &stairs);
+            } until (winat(stairs.y, stairs.x) == FLOOR);
+            switch(rnd(6))
+            {
+                when 0: ch = TRAPDOOR;
+                when 1: ch = BEARTRAP;
+                when 2: ch = SLEEPTRAP;
+                when 3: ch = ARROWTRAP;
+                when 4: ch = TELTRAP;
+                when 5: ch = DARTTRAP;
+            }
+            addch(TRAP);
+            traps[i].tr_type = ch;
+            traps[i].tr_flags = 0;
+            traps[i].tr_pos = stairs;
+        }
     }
     do
     {
-	rm = rnd_room();
-	rnd_pos(&rooms[rm], &hero);
+        rm = rnd_room();
+        rnd_pos(&rooms[rm], &hero);
     }
     until(winat(hero.y, hero.x) == FLOOR);
     light(&hero);
@@ -88,14 +88,14 @@ rnd_room()
 
     do
     {
-	rm = rnd(MAXROOMS);
+        rm = rnd(MAXROOMS);
     } while (rooms[rm].r_flags & ISGONE);
     return rm;
 }
 
 /*
  * put_things:
- *	put potions and scrolls on this level
+ *        put potions and scrolls on this level
  */
 
 put_things()
@@ -115,50 +115,50 @@ put_things()
      * go down into the dungeon.
      */
     if (amulet && level < max_level)
-	return;
+        return;
     /*
      * Do MAXOBJ attempts to put things on a level
      */
     for (i = 0; i < MAXOBJ; i++)
-	if (rnd(100) < 35)
-	{
-	    /*
-	     * Pick a new object and link it in the list
-	     */
-	    item = new_thing();
-	    attach(lvl_obj, item);
-	    cur = (struct object *) ldata(item);
-	    /*
-	     * Put it somewhere
-	     */
-	    rm = rnd_room();
-	    do {
-		rnd_pos(&rooms[rm], &tp);
-	    } until (winat(tp.y, tp.x) == FLOOR);
-	    mvaddch(tp.y, tp.x, cur->o_type);
-	    cur->o_pos = tp;
-	}
+        if (rnd(100) < 35)
+        {
+            /*
+             * Pick a new object and link it in the list
+             */
+            item = new_thing();
+            attach(lvl_obj, item);
+            cur = (struct object *) ldata(item);
+            /*
+             * Put it somewhere
+             */
+            rm = rnd_room();
+            do {
+                rnd_pos(&rooms[rm], &tp);
+            } until (winat(tp.y, tp.x) == FLOOR);
+            mvaddch(tp.y, tp.x, cur->o_type);
+            cur->o_pos = tp;
+        }
     /*
      * If he is really deep in the dungeon and he hasn't found the
      * amulet yet, put it somewhere on the ground
      */
     if (level > 25 && !amulet)
     {
-	item = new_item(sizeof *cur);
-	attach(lvl_obj, item);
-	cur = (struct object *) ldata(item);
-	cur->o_hplus = cur->o_dplus = 0;
-	cur->o_damage = cur->o_hurldmg = "0d0";
-	cur->o_ac = 11;
-	cur->o_type = AMULET;
-	/*
-	 * Put it somewhere
-	 */
-	rm = rnd_room();
-	do {
-	    rnd_pos(&rooms[rm], &tp);
-	} until (winat(tp.y, tp.x) == FLOOR);
-	mvaddch(tp.y, tp.x, cur->o_type);
-	cur->o_pos = tp;
+        item = new_item(sizeof *cur);
+        attach(lvl_obj, item);
+        cur = (struct object *) ldata(item);
+        cur->o_hplus = cur->o_dplus = 0;
+        cur->o_damage = cur->o_hurldmg = "0d0";
+        cur->o_ac = 11;
+        cur->o_type = AMULET;
+        /*
+         * Put it somewhere
+         */
+        rm = rnd_room();
+        do {
+            rnd_pos(&rooms[rm], &tp);
+        } until (winat(tp.y, tp.x) == FLOOR);
+        mvaddch(tp.y, tp.x, cur->o_type);
+        cur->o_pos = tp;
     }
 }

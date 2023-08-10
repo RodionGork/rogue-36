@@ -13,12 +13,12 @@ struct h_list helpstr[1];
 main()
 {
     static struct sc_ent {
-	int sc_score;
-	char sc_name[80];
-	int sc_flags;
-	int sc_level;
-	int sc_uid;
-	char sc_monster;
+        int sc_score;
+        char sc_name[80];
+        int sc_flags;
+        int sc_level;
+        int sc_uid;
+        char sc_monster;
     } top_ten[NUMTOP];
     register struct sc_ent *scp;
     register int i;
@@ -27,26 +27,26 @@ main()
     register char *killer;
     register int prflags = 0;
     register int fd;
-	int oldsize;
+        int oldsize;
 
-	printf("Oldsize? ");
-	scanf("%d", &oldsize);
-	printf("Converting %s from %d entries to %d entries\n", SCOREFILE,
-	  oldsize, NUMTOP);
+        printf("Oldsize? ");
+        scanf("%d", &oldsize);
+        printf("Converting %s from %d entries to %d entries\n", SCOREFILE,
+          oldsize, NUMTOP);
     if ((fd = open(SCOREFILE, 2)) < 0) {
-		printf("Cannot open %s\n", SCOREFILE);
-		exit(1);
-	}
+                printf("Cannot open %s\n", SCOREFILE);
+                exit(1);
+        }
     outf = fdopen(fd, "w");
     for (scp = top_ten; scp < &top_ten[NUMTOP]; scp++)
     {
-	scp->sc_score = 0;
-	for (i = 0; i < 80; i++)
-	    scp->sc_name[i] = '\0';
-	scp->sc_flags = RN;
-	scp->sc_level = RN;
-	scp->sc_monster = RN;
-	scp->sc_uid = RN;
+        scp->sc_score = 0;
+        for (i = 0; i < 80; i++)
+            scp->sc_name[i] = '\0';
+        scp->sc_flags = RN;
+        scp->sc_level = RN;
+        scp->sc_monster = RN;
+        scp->sc_uid = RN;
     }
     encread((char *) top_ten, sizeof(struct sc_ent)*oldsize, fd);
     fseek(outf, 0L, 0);
@@ -72,9 +72,9 @@ register FILE *outf;
 
     while (size--)
     {
-	putc(*start++ ^ *ep++, outf);
-	if (*ep == '\0')
-	    ep = encstr;
+        putc(*start++ ^ *ep++, outf);
+        if (*ep == '\0')
+            ep = encstr;
     }
 }
 
@@ -90,15 +90,15 @@ register int inf;
     register int read_size;
 
     if ((read_size = read(inf, start, size)) == -1 || read_size == 0)
-	return read_size;
+        return read_size;
 
     ep = encstr;
 
     while (size--)
     {
-	*start++ ^= *ep++;
-	if (*ep == '\0')
-	    ep = encstr;
+        *start++ ^= *ep++;
+        if (*ep == '\0')
+            ep = encstr;
     }
     return read_size;
 }

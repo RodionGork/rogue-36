@@ -1,7 +1,7 @@
 /*
  * save and restore routines
  *
- * @(#)save.c	3.9 (Berkeley) 6/16/81
+ * @(#)save.c        3.9 (Berkeley) 6/16/81
  */
 
 #include <curses.h>
@@ -33,33 +33,33 @@ save_game()
     mpos = 0;
     if (file_name[0] != '\0')
     {
-	msg("Save file (%s)? ", file_name);
-	do
-	{
-	    c = getchar();
-	} while (c != 'n' && c != 'N' && c != 'y' && c != 'Y');
-	mpos = 0;
-	if (c == 'y' || c == 'Y')
-	{
-	    msg("File name: %s", file_name);
-	    goto gotfile;
-	}
+        msg("Save file (%s)? ", file_name);
+        do
+        {
+            c = getchar();
+        } while (c != 'n' && c != 'N' && c != 'y' && c != 'Y');
+        mpos = 0;
+        if (c == 'y' || c == 'Y')
+        {
+            msg("File name: %s", file_name);
+            goto gotfile;
+        }
     }
 
     do
     {
-	msg("File name: ");
-	mpos = 0;
-	buf[0] = '\0';
-	if (get_str(buf, cw) == QUIT)
-	{
-	    msg("");
-	    return FALSE;
-	}
-	strcpy(file_name, buf);
+        msg("File name: ");
+        mpos = 0;
+        buf[0] = '\0';
+        if (get_str(buf, cw) == QUIT)
+        {
+            msg("");
+            return FALSE;
+        }
+        strcpy(file_name, buf);
 gotfile:
-	if ((savef = fopen(file_name, "w")) == NULL)
-	    msg(strerror(errno));	/* fake perror() */
+        if ((savef = fopen(file_name, "w")) == NULL)
+            msg(strerror(errno));        /* fake perror() */
     } while (savef == NULL);
 
     /*
@@ -80,9 +80,9 @@ void auto_save(int x)
     register int i;
 
     for (i = 0; i < _NSIG; i++)
-	signal(i, SIG_IGN);
+        signal(i, SIG_IGN);
     if (file_name[0] != '\0' && (savef = fopen(file_name, "w")) != NULL)
-	save_file(savef);
+        save_file(savef);
     exit(1);
 }
 
@@ -112,19 +112,19 @@ char **envp;
     STAT sbuf2;
 
     if (strcmp(file, "-r") == 0)
-	file = file_name;
+        file = file_name;
     if ((inf = open(file, 0)) < 0)
     {
-	perror(file);
-	return FALSE;
+        perror(file);
+        return FALSE;
     }
 
     fflush(stdout);
     encread(buf, strlen(version) + 1, inf);
     if (strcmp(buf, version) != 0)
     {
-	printf("Sorry, saved game is out of date.\n");
-	return FALSE;
+        printf("Sorry, saved game is out of date.\n");
+        return FALSE;
     }
 
     fstat(inf, &sbuf2);
@@ -138,16 +138,16 @@ char **envp;
      */
 
     if (!wizard)
-	if (sbuf2.st_ino != sbuf.st_ino || sbuf2.st_dev != sbuf.st_dev)
-	{
-	    printf("Sorry, saved game is not in the same file.\n");
-	    return FALSE;
-	}
-	else if (sbuf2.st_ctime - sbuf.st_ctime > 15)
-	{
-	    printf("Sorry, file has been touched.\n");
-	    return FALSE;
-	}
+        if (sbuf2.st_ino != sbuf.st_ino || sbuf2.st_dev != sbuf.st_dev)
+        {
+            printf("Sorry, saved game is not in the same file.\n");
+            return FALSE;
+        }
+        else if (sbuf2.st_ctime - sbuf.st_ctime > 15)
+        {
+            printf("Sorry, file has been touched.\n");
+            return FALSE;
+        }
     mpos = 0;
     mvwprintw(cw, 0, 0, "%s: %s", file, ctime(&sbuf2.st_mtime));
 
@@ -155,16 +155,16 @@ char **envp;
      * defeat multiple restarting from the same place
      */
     if (!wizard)
-	if (sbuf2.st_nlink != 1)
-	{
-	    printf("Cannot restore from a linked file\n");
-	    return FALSE;
-	}
-	else if (unlink(file) < 0)
-	{
-	    printf("Cannot unlink file\n");
-	    return FALSE;
-	}
+        if (sbuf2.st_nlink != 1)
+        {
+            printf("Cannot restore from a linked file\n");
+            return FALSE;
+        }
+        else if (unlink(file) < 0)
+        {
+            printf("Cannot unlink file\n");
+            return FALSE;
+        }
 
     environ = envp;
     strcpy(file_name, file);
@@ -190,9 +190,9 @@ register FILE *outf;
 
     while (size--)
     {
-	putc(*start++ ^ *ep++, outf);
-	if (*ep == '\0')
-	    ep = encstr;
+        putc(*start++ ^ *ep++, outf);
+        if (*ep == '\0')
+            ep = encstr;
     }
 }
 
@@ -208,15 +208,15 @@ register int inf;
     register int read_size;
 
     if ((read_size = read(inf, start, size)) == -1 || read_size == 0)
-	return read_size;
+        return read_size;
 
     ep = encstr;
 
     while (size--)
     {
-	*start++ ^= *ep++;
-	if (*ep == '\0')
-	    ep = encstr;
+        *start++ ^= *ep++;
+        if (*ep == '\0')
+            ep = encstr;
     }
     return read_size;
 }
