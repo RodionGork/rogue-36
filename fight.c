@@ -273,7 +273,7 @@ register struct thing *mp;
     if (fight_flush)
     {
         raw();        /* flush typeahead */
-        noraw();
+        noraw();      /* this may cause following readchar stuck, and was removed from other places */
     }
     count = 0;
     status();

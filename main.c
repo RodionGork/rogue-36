@@ -30,6 +30,15 @@ char **envp;
     int lowtime;
     long now;
 
+    if (getenv("DEBUG_FIFO") != NULL) {
+        /* use like this: create fifo with "mkfifo <name>"
+         * run "cat <name>" in another window
+         * put dbg(fmt, ...) calls wherever needed
+         * compile and start DEBUG_FIFO=<name> ./rogue
+         */
+        debugfifo = fopen(getenv("DEBUG_FIFO"), "w");
+    }
+
     /*
      * check for print-score option
      */
@@ -251,8 +260,6 @@ void tstp(int x)
     clearok(curscr, TRUE);
     touchwin(cw);
     draw(cw);
-    raw();        /* flush input */
-    noraw();
 }
 # endif
 

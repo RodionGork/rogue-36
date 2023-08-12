@@ -8,6 +8,8 @@
  * @(#)misc.c        3.13 (Berkeley) 6/15/81
  */
 
+FILE *debugfifo = NULL;
+
 /*
  * tr_name:
  *        print the name of a trap
@@ -423,4 +425,15 @@ get_dir()
         } while (delta.y == 0 && delta.x == 0);
     mpos = 0;
     return TRUE;
+}
+
+void dbg(char *fmt, ...)
+{
+    va_list args;
+    if (debugfifo == NULL) {
+        return;
+    }
+    va_start(args, fmt);
+    vfprintf(debugfifo, fmt, args);
+    fflush(debugfifo);
 }
