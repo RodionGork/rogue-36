@@ -256,8 +256,8 @@
 #define WS_CANCEL 13
 #define MAXSTICKS 14
 
-#ifndef NSIG
-#define NSIG _NSIG
+#ifndef _NSIG
+#define _NSIG NSIG
 #endif
 
 /*

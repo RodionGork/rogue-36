@@ -5,6 +5,8 @@ from [https://britzl.github.io/roguearchive/](https://britzl.github.io/roguearch
 
 Modified to compile and run in Ubuntu (18.04, should work with others too).
 
+Tested on FreeBSD 13.1 also.
+
 Added secondary debugging facility to send messages to named pipe (fifo), though any general file
 could be used, see beginning of `main()` function.
 
@@ -29,8 +31,6 @@ Signals signature should be `void f(int)`
 `gets` should be changed to fgets
 
 some vars from `rogue.h` moved to `globals.c` (header shouldn't declare variables)
-
-`NSIG` defines to `_NSIG` if not defined
 
 Corrected string literal modifications in `init.c` (this do not work on platforms where code
 memory is protected).
