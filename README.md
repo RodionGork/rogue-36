@@ -30,8 +30,6 @@ Signals signature should be `void f(int)`
 
 some vars from `rogue.h` moved to `globals.c` (header shouldn't declare variables)
 
-`NSIG` defines to `_NSIG` if not defined
-
 Corrected string literal modifications in `init.c` (this do not work on platforms where code
 memory is protected).
 

@@ -81,7 +81,7 @@ register char monst;
 score(amount, flags, monst)
 char monst;
 {
-    FILE*fdopen(int, char*);
+    FILE*fdopen(int, const char*);
     static struct sc_ent {
         int sc_score;
         char sc_name[80];
