@@ -6,7 +6,7 @@
 /*
  * where scorefile should live
  */
-#define SCOREFILE        "/snsr/games/.rogue/rogue_roll"
+#define SCOREFILE        "./rogue.scr"
 #define        NUMTOP                20
 
 /*

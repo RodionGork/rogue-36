@@ -14,6 +14,7 @@
 #include <signal.h>
 #include <ctype.h>
 #include <sys/types.h>
+#include <fcntl.h>
 #include <pwd.h>
 #include "mach_dep.h"
 #include "rogue.h"
@@ -108,8 +109,7 @@ char monst;
     /*
      * Open file and read list
      */
-
-    if ((fd = open(SCOREFILE, 2)) < 0)
+    if ((fd = open(SCOREFILE, O_RDWR | O_CREAT)) < 0)
         return;
     outf = fdopen(fd, "w");
 
