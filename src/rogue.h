@@ -484,7 +484,7 @@ unsigned long strlen(const char*);
 void exit(int);
 void abort(void);
 int strncmp(const char*, const char*, unsigned long);
-char *getenv(), *unctrl(), *tr_name(), *new();
+char *getenv(), *tr_name(), *new();
 char *vowelstr(), *inv_name(), *strcpy(), *strcat(), *sbrk(), *brk();
 char *ctime(), *num(), *ring_num();
 

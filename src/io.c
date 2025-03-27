@@ -71,18 +71,9 @@ endmsg()
 
 doadd(fmt, args)
 char *fmt;
-int **args;
+va_list args;
 {
-    static FILE junk;
-
-    /*
-     * Do the printf into buf
-     */
-    junk._flag = _IOWRT + _IOSTRG;
-    junk._ptr = &msgbuf[newpos];
-    junk._cnt = 32767;
-    _doprnt(fmt, args, &junk);
-    putc('\0', &junk);
+    vsprintf(msgbuf+newpos, fmt, args);
     newpos = strlen(msgbuf);
 }
 
@@ -127,7 +118,7 @@ readchar()
  */
 
 char *
-unctrl(ch)
+unctrl_custom(ch)
 char ch;
 {
     extern char *_unctrl[];		/* Defined in curses library */

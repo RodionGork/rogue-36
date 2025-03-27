@@ -19,7 +19,6 @@ command()
     register char ch;
     register int ntimes = 1;			/* Number of player moves */
     static char countch, direction, newcount = FALSE;
-    char *unctrl();
 
     if (on(player, ISHASTE)) ntimes++;
     /*
