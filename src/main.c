@@ -311,7 +311,7 @@ playit()
      * set up defaults for slow terminals
      */
 
-    if (_tty.sg_ospeed < B1200)
+    if (0) /* detect slow terminal, disabled */
     {
 	terse = TRUE;
 	jump = TRUE;
