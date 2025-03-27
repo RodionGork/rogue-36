@@ -332,15 +332,20 @@ init_things()
 
 init_colors()
 {
-    register int i;
+    register int i, c;
     register char *str;
+    bool used[NCOLORS];
+
+    for (i = 0; i < NCOLORS; i++)
+	used[i] = FALSE;
 
     for (i = 0; i < MAXPOTIONS; i++)
     {
-	do
-	    str = rainbow[rnd(NCOLORS)];
-	until (isupper(*str));
-	*str = tolower(*str);
+	do {
+	    c = rnd(NCOLORS);
+	    str = rainbow[c];
+	} while (used[c]);
+	used[c] = TRUE;
 	p_colors[i] = str;
 	p_know[i] = FALSE;
 	p_guess[i] = NULL;
