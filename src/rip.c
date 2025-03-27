@@ -128,7 +128,7 @@ char monst;
     {
 	printf("[Press return to continue]");
 	fflush(stdout);
-	gets(prbuf);
+	fgets(prbuf, sizeof(prbuf), stdin);
     }
     if (wizard)
 	if (strcmp(prbuf, "names") == 0)
@@ -189,7 +189,7 @@ char monst;
 	    else if (prflags == 2)
 	    {
 		fflush(stdout);
-		gets(prbuf);
+		fgets(prbuf, sizeof(prbuf), stdin);
 		if (prbuf[0] == 'd')
 		{
 		    for (sc2 = scp; sc2 < &top_ten[NUMTOP-1]; sc2++)
