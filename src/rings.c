@@ -1,4 +1,4 @@
-#include <curses.h>
+#include "curses.h"
 #include "rogue.h"
 
 /*

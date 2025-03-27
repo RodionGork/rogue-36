@@ -17,7 +17,7 @@
  *	the ARROWTRAP case.
  */
 
-#include <curses.h>
+#include "curses.h"
 #include <ctype.h>
 #include "rogue.h"
 

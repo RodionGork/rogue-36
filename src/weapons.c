@@ -4,7 +4,7 @@
  * @(#)weapons.c	3.17 (Berkeley) 6/15/81
  */
 
-#include <curses.h>
+#include "curses.h"
 #include <ctype.h>
 #include "rogue.h"
 

@@ -4,7 +4,7 @@
  * @(#)monsters.c	3.18 (Berkeley) 6/15/81
  */
 
-#include <curses.h>
+#include "curses.h"
 #include "rogue.h"
 #include <ctype.h>
 

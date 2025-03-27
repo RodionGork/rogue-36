@@ -5,7 +5,7 @@
  * @(#)daemon.c	3.3 (Berkeley) 6/15/81
  */
 
-#include <curses.h>
+#include "curses.h"
 #include "rogue.h"
 
 #define EMPTY 0

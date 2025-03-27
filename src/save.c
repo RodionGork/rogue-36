@@ -4,7 +4,7 @@
  * @(#)save.c	3.9 (Berkeley) 6/16/81
  */
 
-#include <curses.h>
+#include "curses.h"
 #include <ctype.h>
 #include <sys/types.h>
 #include <sys/stat.h>

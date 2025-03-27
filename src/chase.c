@@ -4,7 +4,7 @@
  * @(#)chase.c	3.17 (Berkeley) 6/15/81
  */
 
-#include <curses.h>
+#include "curses.h"
 #include "rogue.h"
 
 coord ch_ret;				/* Where chasing takes you */

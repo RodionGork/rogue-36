@@ -7,7 +7,7 @@
  * @(#)main.c	3.27 (Berkeley) 6/15/81
  */
 
-#include <curses.h>
+#include "curses.h"
 #include <signal.h>
 #include <pwd.h>
 #include "mach_dep.h"

@@ -3,7 +3,7 @@
  * Function(s) for dealing with potions
  */
 
-#include <curses.h>
+#include "curses.h"
 #include "rogue.h"
 
 quaff()

@@ -9,7 +9,7 @@
  *	NUMTOP is defined in mach_dep.h.
  */
 
-#include <curses.h>
+#include "curses.h"
 #include <time.h>
 #include <signal.h>
 #include <ctype.h>
