@@ -267,7 +267,9 @@
 struct h_list {
     char h_ch;
     char *h_desc;
-} helpstr[];
+};
+
+extern struct h_list helpstr[];
 
 /*
  * Coordinate data type
