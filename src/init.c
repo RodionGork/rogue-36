@@ -399,15 +399,20 @@ init_names()
 
 init_stones()
 {
-    register int i;
+    register int i, c;
     register char *str;
+    bool used[NSTONES];
+
+    for (i = 0; i < NSTONES; i++)
+	used[i] = FALSE;
 
     for (i = 0; i < MAXRINGS; i++)
     {
-	do
+	do {
+	    c = rnd(NSTONES);
 	    str = stones[rnd(NSTONES)];
-	until (isupper(*str));
-	*str = tolower(*str);
+	} while (used[c]);
+	used[c] = TRUE;
 	r_stones[i] = str;
 	r_know[i] = FALSE;
 	r_guess[i] = NULL;
