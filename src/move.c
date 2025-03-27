@@ -331,8 +331,10 @@ register int y, x;
     for (tp = traps; tp < ep; tp++)
 	if (tp->tr_pos.y == y && tp->tr_pos.x == x)
 	    break;
-    if (tp == ep)
-	debug(sprintf(prbuf, "Trap at %d,%d not in array", y, x));
+    if (tp == ep) {
+	sprintf(prbuf, "Trap at %d,%d not in array", y, x);
+	debug(prbuf);
+    }
     return tp;
 }
 

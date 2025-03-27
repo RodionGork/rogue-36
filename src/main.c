@@ -328,7 +328,7 @@ playit()
     oldrp = roomin(&hero);
     while (playing)
 	command();			/* Command execution */
-    endit();
+    endit(1);
 }
 
 #if MAXLOAD|MAXUSERS
