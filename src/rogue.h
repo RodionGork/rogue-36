@@ -50,7 +50,7 @@
 #define max(a, b) ((a) > (b) ? (a) : (b))
 #define on(thing, flag) (((thing).t_flags & flag) != 0)
 #define off(thing, flag) (((thing).t_flags & flag) == 0)
-#define CTRL(ch) ('ch' & 037)
+#define CTRLBTN(ch) ((ch) & 037)
 #define ALLOC(x) malloc((unsigned int) x)
 #define FREE(x) cfree((char *) x)
 #define	EQSTR(a, b, c)	(strncmp(a, b, c) == 0)
