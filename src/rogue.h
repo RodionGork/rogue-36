@@ -492,8 +492,9 @@ struct room *roomin();
 
 coord *rndmove();
 
-int auto_save(), endit(), nohaste(), doctor(), runners(), swander();
-int tstp(), unconfuse(), unsee(), rollwand(), stomach(), sight();
+void endit(int), quitgame(int), auto_save(int), tstp(int);
+int nohaste(), doctor(), runners(), swander();
+int unconfuse(), unsee(), rollwand(), stomach(), sight();
 
 #ifdef CHECKTIME
 int checkout();

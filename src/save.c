@@ -74,7 +74,7 @@ gotfile:
  * automatically save a file.  This is used if a HUP signal is
  * recieved
  */
-auto_save()
+void auto_save(int signum)
 {
     register FILE *savef;
     register int i;

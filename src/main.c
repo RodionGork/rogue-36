@@ -27,7 +27,7 @@ char **envp;
     register struct object *obj;
     struct passwd *getpwuid();
     char *getpass(), *crypt();
-    int quit(), lowtime;
+    int lowtime;
     long now;
 
     /*
@@ -189,7 +189,7 @@ char **envp;
  *	Exit the program abnormally.
  */
 
-endit()
+void endit(int signum)
 {
     fatal("Ok, if you want to exit that badly, I'll have to allow it\n");
 }
@@ -239,7 +239,7 @@ register int number, sides;
 /*
  * handle stop and start signals
  */
-tstp()
+void tstp(int signum)
 {
     mvcur(0, COLS - 1, LINES - 1, 0);
     endwin();
@@ -267,7 +267,9 @@ setup()
     signal(SIGILL, auto_save);
     signal(SIGTRAP, auto_save);
     signal(SIGIOT, auto_save);
+#ifdef SIGEMT
     signal(SIGEMT, auto_save);
+#endif
     signal(SIGFPE, auto_save);
     signal(SIGBUS, auto_save);
     signal(SIGSEGV, auto_save);
@@ -276,7 +278,7 @@ setup()
     signal(SIGTERM, auto_save);
 #endif
 
-    signal(SIGINT, quit);
+    signal(SIGINT, quitgame);
 #ifndef DUMP
     signal(SIGQUIT, endit);
 #endif

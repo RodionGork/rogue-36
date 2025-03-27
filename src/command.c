@@ -143,7 +143,7 @@ command()
 			after = FALSE;
 		    else
 			missile(delta.y, delta.x);
-		when 'Q' : after = FALSE; quit();
+		when 'Q' : after = FALSE; quitgame(0);
 		when 'i' : after = FALSE; inventory(pack, 0);
 		when 'I' : after = FALSE; picky_inven();
 		when 'd' : drop();
@@ -303,16 +303,16 @@ command()
 }
 
 /*
- * quit:
+ * quitgame:
  *	Have player make certain, then exit.
  */
 
-quit()
+void quitgame(int signum)
 {
     /*
      * Reset the signal in case we got here via an interrupt
      */
-    if (signal(SIGINT, quit) != quit)
+    if (signal(SIGINT, quitgame) != quitgame)
 	mpos = 0;
     msg("Really quit?");
     draw(cw);
@@ -326,7 +326,7 @@ quit()
     }
     else
     {
-	signal(SIGINT, quit);
+	signal(SIGINT, quitgame);
 	wmove(cw, 0, 0);
 	wclrtoeol(cw);
 	status();
@@ -564,8 +564,6 @@ shell()
     }
     else
     {
-	int endit();
-
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	while (wait(&ret_status) != pid)
