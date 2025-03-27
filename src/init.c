@@ -429,26 +429,30 @@ init_stones()
 
 init_materials()
 {
-    register int i;
+    register int i, c;
     register char *str;
+    bool wand, used[NMETAL + NWOOD];
+
+    for (i = 0; i < NMETAL; i++)
+	used[i] = FALSE;
 
     for (i = 0; i < MAXSTICKS; i++)
     {
 	do
 	    if (rnd(100) > 50)
 	    {
-		str = metal[rnd(NMETAL)];
-		if (isupper(*str))
-			ws_type[i] = "wand";
+		c = rnd(NMETAL);
+		str = metal[c];
+		wand = TRUE;
 	    }
 	    else
 	    {
-		str = wood[rnd(NWOOD)];
-		if (isupper(*str))
-			ws_type[i] = "staff";
+		c = rnd(NWOOD);
+		str = wood[c];
+		wand = FALSE;
 	    }
-	until (isupper(*str));
-	*str = tolower(*str);
+	while (used[c + (wand ? 0 : NMETAL)]);
+	used[c + (wand ? 0 : NMETAL)] = TRUE;
 	ws_made[i] = str;
 	ws_know[i] = FALSE;
 	ws_guess[i] = NULL;
