@@ -26,7 +26,7 @@ char **envp;
     register struct linked_list *item;
     register struct object *obj;
     struct passwd *getpwuid();
-    char *getpass(), *crypt();
+    char *getpass();
     int lowtime;
     long now;
 
@@ -43,7 +43,7 @@ char **envp;
      * Check to see if he is a wizard
      */
     if (argc >= 2 && argv[1][0] == '\0')
-	if (strcmp(PASSWD, crypt(getpass("Wizard's password: "), "mT")) == 0)
+	if (strcmp(PASSWD, getpass("Wizard's password: ")) == 0)
 	{
 	    wizard = TRUE;
 	    argv++;

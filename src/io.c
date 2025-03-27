@@ -113,20 +113,6 @@ readchar()
 }
 
 /*
- * unctrl:
- *	Print a readable version of a certain character
- */
-
-char *
-unctrl_custom(ch)
-char ch;
-{
-    extern char *_unctrl[];		/* Defined in curses library */
-
-    return _unctrl[ch&0177];
-}
-
-/*
  * status:
  *	Display the important stats line.  Keep the cursor where it was.
  */

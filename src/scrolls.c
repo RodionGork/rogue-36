@@ -7,6 +7,7 @@
 
 #include <curses.h>
 #include <ctype.h>
+#include <stdlib.h>
 #include "rogue.h"
 
 read_scroll()

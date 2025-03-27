@@ -52,6 +52,9 @@
 #define off(thing, flag) (((thing).t_flags & flag) == 0)
 #define CTRLBTN(ch) ((ch) & 037)
 #define ALLOC(x) malloc((unsigned int) x)
+#ifndef cfree
+#define cfree free
+#endif
 #define FREE(x) cfree((char *) x)
 #define	EQSTR(a, b, c)	(strncmp(a, b, c) == 0)
 #define GOLDCALC (rnd(50 + 10 * level) + 2)
@@ -323,7 +326,9 @@ struct trap {
     coord tr_pos;			/* Where trap is */
     char tr_type;			/* What kind of trap */
     int tr_flags;			/* Info about trap (i.e. ISFOUND) */
-} traps[MAXTRAPS];
+};
+
+extern struct trap traps[MAXTRAPS];
 
 /*
  * Structure describing a fighting being

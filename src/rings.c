@@ -1,4 +1,5 @@
 #include <curses.h>
+#include <stdlib.h>
 #include "rogue.h"
 
 /*

@@ -9,13 +9,12 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <signal.h>
+#include <errno.h>
 #include "rogue.h"
 
 typedef struct stat STAT;
 
-extern char *sys_errlist[], version[], encstr[];
-extern bool _endwin;
-extern int errno;
+extern char version[], encstr[];
 
 char *sbrk();
 
@@ -59,7 +58,7 @@ save_game()
 	strcpy(file_name, buf);
 gotfile:
 	if ((savef = fopen(file_name, "w")) == NULL)
-	    msg(sys_errlist[errno]);	/* fake perror() */
+	    msg("fopen failed on save");	/* fake perror() */
     } while (savef == NULL);
 
     /*
@@ -101,8 +100,8 @@ register FILE *savef;
     fstat(fileno(savef), &sbuf);
     fwrite("junk", 1, 5, savef);
     fseek(savef, 0L, 0);
-    _endwin = TRUE;
-    encwrite(version, sbrk(0) - version, savef);
+    /*this won't work, need to implement storing of all globals*/
+    /*encwrite(version, sbrk(0) - version, savef);*/
     fclose(savef);
 }
 
