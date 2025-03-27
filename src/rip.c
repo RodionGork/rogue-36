@@ -81,6 +81,7 @@ register char monst;
 score(amount, flags, monst)
 char monst;
 {
+    FILE*fdopen(int, const char*);
     static struct sc_ent {
 	int sc_score;
 	char sc_name[80];
@@ -92,7 +93,7 @@ char monst;
     register struct sc_ent *scp;
     register int i;
     register struct sc_ent *sc2;
-    register FILE *outf;
+    FILE *outf;
     register char *killer;
     register int prflags = 0;
     register int fd;
@@ -165,7 +166,7 @@ char monst;
     printf("\nTop %d Adventurers:\nRank\tScore\tName\n", NUMTOP);
     for (scp = top_ten; scp < &top_ten[NUMTOP]; scp++) {
 	if (scp->sc_score) {
-	    printf("%d\t%d\t%s: %s on level %d", scp - top_ten + 1,
+	    printf("%d\t%d\t%s: %s on level %d", (int)(scp - top_ten + 1),
 		scp->sc_score, scp->sc_name, reason[scp->sc_flags],
 		scp->sc_level);
 	    if (scp->sc_flags == 0) {

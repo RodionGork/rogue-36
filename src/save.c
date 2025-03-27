@@ -79,6 +79,10 @@ void auto_save(int signum)
     register FILE *savef;
     register int i;
 
+    #ifndef NSIG
+    #define NSIG _NSIG
+    #endif
+
     for (i = 0; i < NSIG; i++)
 	signal(i, SIG_IGN);
     if (file_name[0] != '\0' && (savef = fopen(file_name, "w")) != NULL)
@@ -167,6 +171,7 @@ char **envp;
 	}
 
     environ = envp;
+    #ifdef My_term
     if (!My_term && isatty(2))
     {
 	register char	*sp;
@@ -179,6 +184,7 @@ char **envp;
     }
     else
 	setterm(Def_term);
+    #endif
     strcpy(file_name, file);
     setup();
     clearok(curscr, TRUE);

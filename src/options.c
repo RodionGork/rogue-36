@@ -317,7 +317,7 @@ strucpy(s1, s2, len)
 register char *s1, *s2;
 register int len;
 {
-    register char *sp;
+    const char *sp;
 
     while (len--)
     {

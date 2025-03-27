@@ -19,6 +19,7 @@ inv_name(obj, drop)
 register struct object *obj;
 register bool drop;
 {
+    char* charge_str(struct object*);
     register char *pb;
 
     switch(obj->o_type)
