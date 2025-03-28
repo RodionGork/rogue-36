@@ -17,10 +17,10 @@ static char msgbuf[BUFSIZ];
 static int newpos = 0;
 
 /*VARARGS1*/
-msg(fmt, args)
-char *fmt;
-int args;
+msg(char* fmt, ...)
 {
+    va_list args;
+    va_start(args, fmt);
     /*
      * if the string is "", just clear the line
      */
@@ -34,18 +34,18 @@ int args;
     /*
      * otherwise add to the message and flush it out
      */
-    doadd(fmt, &args);
+    doadd(fmt, args);
     endmsg();
 }
 
 /*
  * add things to the current message
  */
-addmsg(fmt, args)
-char *fmt;
-int args;
+addmsg(char*fmt, ...)
 {
-    doadd(fmt, &args);
+    va_list args;
+    va_start(args, fmt);
+    doadd(fmt, args);
 }
 
 /*
