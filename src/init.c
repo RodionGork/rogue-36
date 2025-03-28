@@ -456,6 +456,7 @@ init_materials()
 	ws_made[i] = str;
 	ws_know[i] = FALSE;
 	ws_guess[i] = NULL;
+	ws_type[i] = wand ? "wand" : "staff";
 	if (i > 0)
 		ws_magic[i].mi_prob += ws_magic[i-1].mi_prob;
     }
