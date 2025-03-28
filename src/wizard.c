@@ -158,8 +158,6 @@ teleport()
     }
     count = 0;
     running = FALSE;
-    raw();		/* flush typeahead */
-    noraw();
     return rm;
 }
 

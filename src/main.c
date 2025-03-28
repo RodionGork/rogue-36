@@ -251,8 +251,6 @@ void tstp(int signum)
     clearok(curscr, TRUE);
     touchwin(cw);
     draw(cw);
-    raw();	/* flush input */
-    noraw();
 }
 # endif
 
