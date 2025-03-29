@@ -11,8 +11,8 @@
 /*
  * List of monsters in rough order of vorpalness
  */
-static char *lvl_mons =  "KJBSHEAOZGLCRQNYTWFIXUMVDP";
-static char *wand_mons = "KJBSH AOZG CRQ Y W IXU V  ";
+static char lvl_mons[] = "KJBSHEAOZGLCRQNYTWFIXUMVDP";
+static char wand_mons[] = "KJBSH AOZG CRQ Y W IXU V  ";
 
 /*
  * randmonster:
