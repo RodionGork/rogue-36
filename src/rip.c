@@ -69,7 +69,6 @@ register char monst;
     move(LINES-1, 0);
     draw(stdscr);
     score(purse, 0, monst);
-    endwin();
     exit(0);
 }
 
@@ -81,7 +80,6 @@ register char monst;
 score(amount, flags, monst)
 char monst;
 {
-    FILE*fdopen(int, const char*);
     static struct sc_ent {
 	int sc_score;
 	char sc_name[80];
@@ -93,25 +91,26 @@ char monst;
     register struct sc_ent *scp;
     register int i;
     register struct sc_ent *sc2;
-    FILE *outf;
+    FILE *file;
     register char *killer;
     register int prflags = 0;
-    register int fd;
     static char *reason[] = {
 	"killed",
 	"quit",
 	"A total winner",
     };
 
-    if (flags != -1)
+    if (flags != -1) {
+	fdbg("pressreturn");
+	printf("[Press space to continue]");
+	fflush(stdout);
+	wait_for(' ');
 	endwin();
+    }
+    printf("\n\n\n");
     /*
      * Open file and read list
      */
-
-    if ((fd = open(SCOREFILE, 2)) < 0)
-	return;
-    outf = fdopen(fd, "w");
 
     for (scp = top_ten; scp < &top_ten[NUMTOP]; scp++)
     {
@@ -125,18 +124,16 @@ char monst;
     }
 
     signal(SIGINT, SIG_DFL);
-    if (flags != -1)
-    {
-	printf("[Press return to continue]");
-	fflush(stdout);
-	fgets(prbuf, sizeof(prbuf), stdin);
-    }
     if (wizard)
 	if (strcmp(prbuf, "names") == 0)
 	    prflags = 1;
 	else if (strcmp(prbuf, "edit") == 0)
 	    prflags = 2;
-    encread((char *) top_ten, sizeof top_ten, fd);
+    file = fopen(SCOREFILE, "rb");
+    if (file) {
+	fread((void *) top_ten, sizeof top_ten, 1, file);
+	fclose(file);
+    }
     /*
      * Insert her in list if need be
      */
@@ -208,12 +205,12 @@ char monst;
 		printf(".\n");
 	}
     }
-    fseek(outf, 0L, 0);
+    file = fopen(SCOREFILE, "wb");
     /*
      * Update the list file
      */
-    encwrite((char *) top_ten, sizeof top_ten, outf);
-    fclose(outf);
+    fwrite((void *) top_ten, sizeof top_ten, 1, file);
+    fclose(file);
 }
 
 total_winner()
