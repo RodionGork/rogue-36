@@ -64,8 +64,8 @@ register char monst;
     killer = killname(monst);
     mvaddstr(17, 28-((strlen(killer)+1)/2), killer);
     mvaddstr(16, 33, vowelstr(killer));
-    sprintf(prbuf, "%2d", lt->tm_year);
-    mvaddstr(18, 28, prbuf);
+    sprintf(prbuf, "%4d", lt->tm_year + 1900);
+    mvaddstr(18, 26, prbuf);
     move(LINES-1, 0);
     draw(stdscr);
     score(purse, 0, monst);
@@ -101,7 +101,6 @@ char monst;
     };
 
     if (flags != -1) {
-	fdbg("pressreturn");
 	printf("[Press space to continue]");
 	fflush(stdout);
 	wait_for(' ');
