@@ -19,17 +19,20 @@ runners()
     register struct linked_list *item;
     register struct thing *tp;
 
-    for (item = mlist; item != NULL; item = next(item))
+    for (item = mlist; item != NULL;)
     {
+	struct linked_list* next_item = next(item);
 	tp = (struct thing *) ldata(item);
 	if (off(*tp, ISHELD) && on(*tp, ISRUN))
 	{
-	    if (off(*tp, ISSLOW) || tp->t_turn)
+	    bool turn = tp->t_turn;
+	    tp->t_turn ^= TRUE;
+	    if (off(*tp, ISSLOW) || turn)
 		do_chase(tp);
 	    if (on(*tp, ISHASTE))
 		do_chase(tp);
-	    tp->t_turn ^= TRUE;
 	}
+	item = next_item;
     }
 }
 

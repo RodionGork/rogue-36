@@ -194,7 +194,7 @@ register struct thing *mp;
 		when 'L':
 		{
 		    /*
-		     * Leperachaun steals some gold
+		     * Leprechaun steals some gold
 		     */
 		    register long lastpurse;
 
