@@ -9,6 +9,8 @@
 
 #include <curses.h>
 #include <signal.h>
+#include <execinfo.h>
+#include <unistd.h>
 #include <pwd.h>
 #include "mach_dep.h"
 #include "rogue.h"
@@ -29,7 +31,6 @@ char **envp;
     char *getpass();
     int lowtime;
     long now;
-
     /*
      * check for print-score option
      */
@@ -259,6 +260,7 @@ setup()
 #ifdef CHECKTIME
     int  checkout();
 #endif
+    void segv_handler(int);
 
 #ifndef DUMP
     signal(SIGHUP, auto_save);
@@ -270,7 +272,7 @@ setup()
 #endif
     signal(SIGFPE, auto_save);
     signal(SIGBUS, auto_save);
-    signal(SIGSEGV, auto_save);
+    signal(SIGSEGV, segv_handler);
     signal(SIGSYS, auto_save);
     signal(SIGPIPE, auto_save);
     signal(SIGTERM, auto_save);
@@ -467,3 +469,11 @@ ucount()
     return count;
 }
 #endif
+
+void segv_handler(int sig) {
+    void* arr[16];
+    int sz = backtrace(arr, 16);
+    fdbg("SEGV");
+    endwin();
+    backtrace_symbols_fd(arr, sz, STDERR_FILENO);
+}
