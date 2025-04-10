@@ -95,9 +95,7 @@
 /*
  * Various constants
  */
-#define	PASSWD	"mTcTtUJ57exqY"
-/* #define PASSWD "mTUPAHIUXEmyQ" */
-/* #define	PASSWD "mTmZcVjBEccKk" */
+#define	PASSWD	"Xyzzy"
 #define BEARTIME 3
 #define SLEEPTIME 5
 #define HEALTIME 30
