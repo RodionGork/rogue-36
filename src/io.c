@@ -208,11 +208,15 @@ show_win(scr, message)
 register WINDOW *scr;
 char *message;
 {
+    char buf[COLS+1];
+    mvwinnstr(scr, 0, 0, buf, COLS);
+    fdbg("show_win: %d", strlen(buf));
     mvwaddstr(scr, 0, 0, message);
     touchwin(scr);
     wmove(scr, hero.y, hero.x);
     draw(scr);
     wait_for(' ');
+    mvwaddnstr(scr, 0, 0, buf, COLS);
     clearok(cw, TRUE);
     touchwin(cw);
 }
