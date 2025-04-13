@@ -1,6 +1,6 @@
 # Rogue version from 1981 revived
 
-It was take as as a source "Rogue 3.6 (Source) - from_bsd_usenix87_rogue3.6.zip" from [https://britzl.github.io/roguearchive/](https://britzl.github.io/roguearchive/).
+It was taken as a source "Rogue 3.6 (Source) - from_bsd_usenix87_rogue3.6.zip" from [https://britzl.github.io/roguearchive/](https://britzl.github.io/roguearchive/).
 
 Number of small fixes was applied (most caused by minor language evolution and incompatibility, with some bug(s) fixed in auxiliary functions) - you can
 trace them by commits history - they are intentionally small, each one about some fix.
