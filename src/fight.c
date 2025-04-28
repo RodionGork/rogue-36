@@ -140,7 +140,8 @@ register struct thing *mp;
 			    addmsg(" by the gaze of the floating eye.");
 			endmsg();
 		    }
-		    no_command += rnd(2)+2;
+		    if (no_command < 7)
+			no_command += rnd(2)+2;
 		when 'A':
 		    /*
 		     * Ants have poisonous bites
