@@ -171,7 +171,9 @@ command()
 		when 'v' : msg("Rogue version %s. (mctesq was here)", release);
 		when CTRLBTN('L') : after = FALSE; clearok(curscr,TRUE);draw(curscr);
 		when CTRLBTN('R') : after = FALSE; msg(huh);
-		when 'S' : 
+		when 'S' :
+		    msg("Save functionality intentionally disabled in this version. Play till end!");
+		    break;
 		    after = FALSE;
 		    if (save_game())
 		    {
